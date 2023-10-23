@@ -8,6 +8,7 @@ from classes.movie_genres import MovieGenres
 
 db = Database()
 movieGenre: MovieGenres = MovieGenres()
+print(movieGenre)
 
 
 class Application(Frame):

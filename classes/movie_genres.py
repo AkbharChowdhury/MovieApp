@@ -1,14 +1,17 @@
+from dataclasses import dataclass, field
+
+
+@dataclass
 class MovieGenres:
+    @staticmethod
+    def default_genre():
+        return "Any Genre"
+
     @staticmethod
     def genre_list(genre_list):
         genres = [genre for genre in genre_list]
         genres.insert(0, MovieGenres.default_genre())
         return genres
 
-    @staticmethod
-    def default_genre():
-        return "Any Genre"
-
-    def __init__(self):
-        self.title = ''
-        self.genre = MovieGenres.default_genre()
+    title: str = ''
+    genre: str = field(default=default_genre())
