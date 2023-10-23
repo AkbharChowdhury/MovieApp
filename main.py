@@ -100,7 +100,7 @@ class Application(Frame):
             duration = Helper.calc_duration(int(row[1]))
             rating = row[2]
             genre = row[3]
-            
+
             movie_list = (title, duration, rating, genre)
             self.movie_list.insert('', 'end', text="1", values=movie_list)
 
