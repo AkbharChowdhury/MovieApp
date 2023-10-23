@@ -1,10 +1,10 @@
 import tkinter as tk
 from tkinter import *
 from tkinter.ttk import Combobox, Treeview
-from db import Database
-from helper import Helper
-from movie import Movie
-from movie_genres import MovieGenres
+from classes.db import Database
+from classes.helper import Helper
+from classes.movie import Movie
+from classes.movie_genres import MovieGenres
 
 db = Database()
 movieGenre: MovieGenres = MovieGenres()
@@ -83,15 +83,13 @@ class Application(Frame):
             self.master, text='Genre', font=('bold', 14))
         self.lblGenre.grid(row=1, column=2, sticky=tk.W)
         self.cbGenre = Combobox(self.master, state='readonly', width=20)
-        movie_genres = [genre for genre in db.fetch_genres()]
-        movie_genres.insert(0, MovieGenres.default_genre())
-        self.cbGenre['values'] = movie_genres
+
+        self.cbGenre['values'] = MovieGenres.genre_list(db.fetch_genres())
         self.cbGenre.current(0)
         self.cbGenre.grid(row=1, column=3)
         self.cbGenre.bind('<<ComboboxSelected>>', self.genre_selected)
 
         self.movie_table()
-
         self.buttons()
 
     def populate_list(self):

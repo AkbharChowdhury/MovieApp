@@ -1,12 +1,12 @@
 import sqlite3
 
-from movie_genres import MovieGenres
+from classes.movie_genres import MovieGenres
 
 
 class Database:
     def __init__(self):
-        self.conn = sqlite3.connect('cinema.db')
-        self.__cur = self.conn.cursor()
+        self.__conn = sqlite3.connect('cinema.db')
+        self.__cur = self.__conn.cursor()
 
     def show_movie_list(self, movie_genre: MovieGenres):
         genre = movie_genre.genre
@@ -44,4 +44,4 @@ class Database:
         return self.__cur.fetchall()
 
     def __del__(self):
-        self.conn.close()
+        self.__conn.close()
