@@ -59,10 +59,15 @@ class Application(Frame):
 
         for i, column in enumerate(columns, start=1):
             self.movie_list.column(f"# {i}", anchor=CENTER)
-            self.movie_list.heading(f"# {i}", text=column)
+            self.movie_list.heading(f"# {i}", text=column.capitalize())
 
         self.movie_list.grid(row=3, column=0, columnspan=3,
                              rowspan=4, pady=20, padx=20)
+
+        scrollbar = Scrollbar(self.master)
+        scrollbar.grid(row=3, column=3)
+        self.movie_list.configure(yscrollcommand=scrollbar.set)
+        scrollbar.configure(command=self.movie_list.yview)
 
     def create_widgets(self):
 
@@ -86,10 +91,6 @@ class Application(Frame):
         self.cbGenre.bind('<<ComboboxSelected>>', self.genre_selected)
 
         self.movie_table()
-        self.scrollbar = Scrollbar(self.master)
-        self.scrollbar.grid(row=3, column=3)
-        self.movie_list.configure(yscrollcommand=self.scrollbar.set)
-        self.scrollbar.configure(command=self.movie_list.yview)
 
         self.buttons()
 
@@ -100,7 +101,6 @@ class Application(Frame):
             duration = Helper.calc_duration(int(row[1]))
             rating = row[2]
             genre = row[3]
-
             movie_list = (title, duration, rating, genre)
             self.movie_list.insert('', 'end', text="1", values=movie_list)
 

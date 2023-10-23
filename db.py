@@ -10,11 +10,10 @@ class Database:
 
     def show_movie_list(self, movie_genre: MovieGenres):
         genre = movie_genre.genre
-        title = movie_genre.title
-        params = {'title': f'%{title}%'}
+        params = {'title': f'%{movie_genre.title}%'}
 
         sql = """
-        SELECT m.title,
+                SELECT m.title,
                        m.duration,
                        r.rating,
                        Group_concat(g.genre, '/') genre_list
@@ -29,7 +28,7 @@ class Database:
                           
                 GROUP BY m.movie_id
         """
-        if genre != MovieGenres.default_genre():
+        if genre.casefold() != MovieGenres.default_genre().casefold():
             sql += " HAVING genre_list LIKE :genre"
             params['genre'] = f'%{genre}%'
 
