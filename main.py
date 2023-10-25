@@ -93,7 +93,7 @@ class Application(Frame):
     def populate_list(self):
         self.clear_list()
         for movie in Movie.movie_list(db.show_movie_list(movieGenre)):
-            self.movie_list.insert('', 'end', text="1", values=(movie.title, movie.duration, movie.rating, movie.genre))
+            self.movie_list.insert('', 'end', text="1", values=Movie.to_tuple(movie))
 
 
 def main():

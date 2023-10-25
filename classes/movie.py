@@ -11,6 +11,10 @@ class Movie:
     genre: str = ''
 
     @staticmethod
+    def to_tuple(movie):
+        return movie.title, movie.duration, movie.rating, movie.genre
+
+    @staticmethod
     def movie_list(movies):
         movie_list = []
         for row in movies:
