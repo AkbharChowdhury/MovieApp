@@ -2,30 +2,25 @@ import tkinter as tk
 from tkinter import *
 from tkinter.ttk import Combobox, Treeview
 from classes.db import Database
-from classes.helper import Helper
 from classes.movie import Movie
 from classes.movie_genres import MovieGenres
 
 db = Database()
-movieGenre: MovieGenres = MovieGenres()
-print(movieGenre)
+movieGenre = MovieGenres()
 
 
 class Application(Frame):
     def __init__(self, master):
         super().__init__(master)
         self.master = master
-        master.title('Cinema Ticket Machine - List Movies')
+        self.master.title('Cinema Ticket Machine - List Movies')
         win_size = {'w': 1100, 'h': 300}
-        master.geometry(f"{win_size.get('w')}x{win_size.get('h')}")
+        self.master.geometry(f"{win_size.get('w')}x{win_size.get('h')}")
         self.create_widgets()
-
-        # Populate initial list
         self.populate_list()
 
     def clear_list(self):
-        for item in self.movie_list.get_children():
-            self.movie_list.delete(item)
+        [self.movie_list.delete(item) for item in self.movie_list.get_children()]
 
     def genre_selected(self, event):
         movieGenre.genre = self.cbGenre.get()
@@ -84,8 +79,10 @@ class Application(Frame):
             self.master, text='Genre', font=('bold', 14))
         self.lblGenre.grid(row=1, column=2, sticky=tk.W)
         self.cbGenre = Combobox(self.master, state='readonly', width=20)
+        genres = [genre for genre in db.fetch_genres()]
+        genres.insert(0, MovieGenres.default_genre())
 
-        self.cbGenre['values'] = MovieGenres.genre_list(db.fetch_genres())
+        self.cbGenre['values'] = genres
         self.cbGenre.current(0)
         self.cbGenre.grid(row=1, column=3)
         self.cbGenre.bind('<<ComboboxSelected>>', self.genre_selected)
@@ -95,13 +92,8 @@ class Application(Frame):
 
     def populate_list(self):
         self.clear_list()
-        for row in db.show_movie_list(movieGenre):
-            title = row[0]
-            duration = Helper.calc_duration(int(row[1]))
-            rating = row[2]
-            genre = row[3]
-            movie_list = (title, duration, rating, genre)
-            self.movie_list.insert('', 'end', text="1", values=movie_list)
+        for movie in Movie.movie_list(db.show_movie_list(movieGenre)):
+            self.movie_list.insert('', 'end', text="1", values=(movie.title, movie.duration, movie.rating, movie.genre))
 
 
 def main():
