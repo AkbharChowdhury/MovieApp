@@ -28,7 +28,7 @@ class Database:
                           
                 GROUP BY m.movie_id
         """
-        if genre.casefold() != MovieGenres.default_genre().casefold():
+        if not movie_genre.is_default_genre():
             sql += " HAVING genre_list LIKE :genre"
             params['genre'] = f'%{genre}%'
 

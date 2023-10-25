@@ -4,15 +4,14 @@ from dataclasses import dataclass, field
 @dataclass()
 class MovieGenres:
 
+    def is_default_genre(self):
+        return self.genre == MovieGenres.default_genre()
+
     def filter_list(self):
-        filters = []
-
-        if self.genre != MovieGenres.default_genre():
-            filters.append(lambda movie: self.genre.casefold() in movie.genre.casefold())
-
-        if self.title:
-            filters.append(lambda movie: self.title.casefold() in movie.title.casefold())
-
+        filters = (
+            lambda p: self.title.casefold() in p.title.casefold() if self.title else [''],
+            lambda p: self.genre.casefold() in p.genre.casefold() if not self.is_default_genre() else ['']
+        )
         return list((filter(lambda p: all(f(p) for f in filters), self.movie_list)))
 
     @staticmethod

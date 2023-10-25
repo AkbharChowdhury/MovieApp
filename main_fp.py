@@ -8,7 +8,6 @@ from classes.movie_genres import MovieGenres
 db = Database()
 movieGenre = MovieGenres(movie_list=Movie.movie_list(db.show_movie_list_fp()))
 
-
 class Application(Frame):
     def __init__(self, master):
         super().__init__(master)
