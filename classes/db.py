@@ -34,7 +34,7 @@ class Database:
 
         return self.__cur.execute(sql, params)
 
-    def show_movie_list2(self):
+    def show_movie_list_fp(self):
         return self.__cur.execute("""
                    SELECT
                         m.title,

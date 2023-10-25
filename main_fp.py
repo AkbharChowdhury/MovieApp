@@ -6,7 +6,7 @@ from classes.movie import Movie
 from classes.movie_genres import MovieGenres
 
 db = Database()
-movieGenre = MovieGenres(movie_list=Movie.movie_list(db.show_movie_list2()))
+movieGenre = MovieGenres(movie_list=Movie.movie_list(db.show_movie_list_fp()))
 
 
 class Application(Frame):

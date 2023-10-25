@@ -1,21 +1,19 @@
 from dataclasses import dataclass, field
 
 
-@dataclass
+@dataclass()
 class MovieGenres:
-    def __default_genres(self):
-        return MovieGenres.default_genre()
 
     def filter_list(self):
         filters = []
+
+        if self.genre != MovieGenres.default_genre():
+            filters.append(lambda movie: self.genre.casefold() in movie.genre.casefold())
+
         if self.title:
-            filters.append(lambda p: self.title.casefold() in p.title.casefold())
-        if self.genre != "Any Genre":
-            filters.append(lambda p: p.genre in self.genre)
-        try:
-            return list((filter(lambda p: all(f(p) for f in filters), self.movie_list)))
-        except StopIteration:
-            return None
+            filters.append(lambda movie: self.title.casefold() in movie.title.casefold())
+
+        return list((filter(lambda p: all(f(p) for f in filters), self.movie_list)))
 
     @staticmethod
     def default_genre():
@@ -23,4 +21,4 @@ class MovieGenres:
 
     title: str = ''
     genre: str = field(default=default_genre())
-    movie_list: list = field(default_factory=list)
+    movie_list: tuple = field(default_factory=tuple)
